@@ -1,0 +1,24 @@
+{
+  "$schema": "https://flagd.dev/schema/v0/flags.json",
+  "flags": {
+    "hex-color": {
+      "state": "ENABLED",
+      "defaultVariant": "blue",
+      "variants": {
+        "red": "c00",
+        "green": "0c0",
+        "blue": "00c"
+      }
+    },
+    "emoji-code": {
+      "$comment": "see https://www.w3schools.com/charsets/ref_emoji_smileys.asp",
+      "state": "ENABLED",
+      "defaultVariant": "😂",
+      "variants": {
+        "😀": 128512,
+        "😁": 128513,
+        "😂": 128514
+      }
+    }
+  }  
+}

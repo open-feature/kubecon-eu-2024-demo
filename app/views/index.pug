@@ -1,6 +1,12 @@
 html
   head
     title= title
+    style(type="text/css").
+      body {
+        font-size: 15vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
   body(style='background-color:#' + hexColor)
-    h1= message
-    p(style='font-size:100px') &##{emojiCode}
+    div &##{emojiCode}
