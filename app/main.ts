@@ -1,6 +1,9 @@
-import express, { NextFunction, Request, Response } from 'express';
-import http from 'http'
+import http from 'http';
 import path from 'path';
+import express, { NextFunction, Request, Response } from 'express';
+import { index } from './handlers';
+import { OpenFeature } from '@openfeature/server-sdk';
+import { FlagdProvider } from '@openfeature/flagd-provider';
 
 var app = express();
 
@@ -9,9 +12,7 @@ app.set('view engine', 'pug')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/static', express.static(path.join(__dirname, 'public')));
-app.use('/', (req: Request, res: Response) => {
-  res.render('index', { title: 'Demo', hexColor: 'c00', emojiCode: 128540 }) // use ffs here; https://www.w3schools.com/charsets/ref_emoji_smileys.asp
-});
+app.use('/', index);
 
 app.use(function (req, res, next) {
   next();
@@ -27,6 +28,8 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+OpenFeature.setProviderAndWait(new FlagdProvider());
 
 var server = http.createServer(app);
 
