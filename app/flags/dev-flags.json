@@ -20,9 +20,9 @@
               "yellow",
               {
                 "if": [
-                  { "<=": [{ "var": "batteryPercentage" }, 0, 25] },
-                  "grey",
-                  "red"
+                  { ">": [{ "var": "batteryPercentage" }, 0] },
+                  "red",
+                  "grey"
                 ]
               }
             ]
