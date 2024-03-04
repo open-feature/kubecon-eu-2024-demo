@@ -3,22 +3,87 @@
   "flags": {
     "hex-color": {
       "state": "ENABLED",
-      "defaultVariant": "blue",
+      "defaultVariant": "grey",
       "variants": {
-        "red": "c00",
-        "green": "0c0",
-        "blue": "00c"
+        "grey": "aaa",
+        "green": "0a0",
+        "yellow": "aa0",
+        "red": "a00"
+      },
+      "targeting": {
+        "if": [
+          { ">=": [{ "var": "batteryPercentage" }, 50] },
+          "green",
+          {
+            "if": [
+              { ">=": [{ "var": "batteryPercentage" }, 25] },
+              "yellow",
+              {
+                "if": [
+                  { "<=": [{ "var": "batteryPercentage" }, 0, 25] },
+                  "grey",
+                  "red"
+                ]
+              }
+            ]
+          }
+        ]
       }
     },
-    "emoji-code": {
+    "emoji": {
       "$comment": "see https://www.w3schools.com/charsets/ref_emoji_smileys.asp",
       "state": "ENABLED",
-      "defaultVariant": "😂",
+      "defaultVariant": "none",
       "variants": {
-        "😀": 128512,
-        "😁": 128513,
-        "😂": 128514
+        "none": "",
+        "grin": "😀",
+        "joy": "😂",
+        "xd": "😆",
+        "shades": "😎",
+        "angel": "😇",
+        "devil": "😈",
+        "cry": "😭",
+        "flush": "😳",
+        "mind-blown": "🤯",
+        "hot-face": "🥵",
+        "cat": "😸",
+        "ded": "💀",
+        "stonks": "📈",
+        "not-stonks": "📉",
+        "battery": "🔋",
+        "bot": "🤖",
+        "apple": "🍎",
+        "fox": "🦊",
+        "snail": "🐌",
+        "turtle": "🐢",
+        "rabbit": "🐇",
+        "rocket": "🚀"
+      },
+      "targeting": {
+        "if": [
+          { "==": [{ "var": "connectionType" }, "4g"] },
+          "rocket",
+          {
+            "if": [
+              { "==": [{ "var": "connectionType" }, "3g"] },
+              "rabbit",
+              {
+                "if": [
+                  { "==": [{ "var": "connectionType" }, "2g"] },
+                  "turtle",
+                  {
+                    "if": [
+                      { "==": [{ "var": "connectionType" }, "slow-2g"] },
+                      "snail",
+                      "none"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       }
     }
-  }  
+  }
 }
