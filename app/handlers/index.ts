@@ -24,6 +24,7 @@ type AppSpecificContext = {
   language?: string
   /**
    * Value of navigator.connection.effectiveType
+   * Possible values: "slow-2g", "2g", "3g", or "4g"
    */
   connectionType?: string
 };
@@ -32,11 +33,10 @@ export const index = async (req: Request, res: Response) => {
 
   const client = OpenFeature.getClient();
   const context = generateContext(req);
-  console.log(context);
   const hexColor = await client.getStringValue('hex-color', '000', context);
-  const emojiCode = await client.getNumberValue('emoji-code', 0, context);
+  const emoji = await client.getStringValue('emoji', "", context);
 
-  res.render("index", { title: "Demo", hexColor, emojiCode });
+  res.render("index", { title: "Demo", hexColor, emoji });
 
 };
 
