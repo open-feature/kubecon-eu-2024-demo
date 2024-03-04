@@ -2,6 +2,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/pug": "^2.0.10",
+    "@types/serve-favicon": "^2.5.7",
     "typescript": "^5.3.3"
   },
   "name": "app",
@@ -18,7 +19,8 @@
     "@openfeature/flagd-provider": "^0.11.1",
     "@openfeature/server-sdk": "^1.12.0",
     "express": "^4.18.2",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "serve-favicon": "^2.5.0"
   },
   "license": "Apache-2.0"
 }

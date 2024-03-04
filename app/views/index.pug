@@ -1,12 +1,9 @@
 html
   head
     title= title
-    style(type="text/css").
-      body {
-        font-size: 15vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    style
+      include ../style/index.css
+    script
+      include ../script/index.js
   body(style='background-color:#' + hexColor)
     div &##{emojiCode}
