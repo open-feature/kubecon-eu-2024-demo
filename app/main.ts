@@ -1,9 +1,9 @@
 import http from 'http';
-import path from 'path';
 import express, { NextFunction, Request, Response } from 'express';
 import { index } from './handlers';
 import { OpenFeature } from '@openfeature/server-sdk';
 import { FlagdProvider } from '@openfeature/flagd-provider';
+import favicon from 'serve-favicon';
 
 var app = express();
 
@@ -11,7 +11,7 @@ var app = express();
 app.set('view engine', 'pug')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use('/', index);
 
 app.use(function (req, res, next) {
