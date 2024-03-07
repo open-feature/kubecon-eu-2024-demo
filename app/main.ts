@@ -1,9 +1,14 @@
-import http from 'http';
-import express, { NextFunction, Request, Response } from 'express';
-import { index } from './handlers';
-import { OpenFeature } from '@openfeature/server-sdk';
 import { FlagdProvider } from '@openfeature/flagd-provider';
+import { OpenFeature } from '@openfeature/server-sdk';
+import express from 'express';
+import http from 'http';
 import favicon from 'serve-favicon';
+import { errorHandler, indexHandler } from './handlers';
+
+process.on('SIGINT', () => {
+  console.info("SIGINT")
+  process.exit(0)
+})
 
 var app = express();
 
@@ -12,22 +17,14 @@ app.set('view engine', 'pug')
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use('/', index);
+app.use('/', indexHandler);
 
 app.use(function (req, res, next) {
   next();
 });
 
 // error handler
-app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(errorHandler);
 
 OpenFeature.setProviderAndWait(new FlagdProvider());
 
@@ -66,11 +63,9 @@ function onError(error: any) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
       process.exit(1);
-      break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
       process.exit(1);
-      break;
     default:
       throw error;
   }
