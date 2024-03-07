@@ -29,7 +29,7 @@ type AppSpecificContext = {
   connectionType?: string
 };
 
-export const index = async (req: Request, res: Response) => {
+export const indexHandler = async (req: Request, res: Response) => {
 
   const client = OpenFeature.getClient();
   const context = generateContext(req);
@@ -41,6 +41,11 @@ export const index = async (req: Request, res: Response) => {
   }
 
   res.render("index", { title: "Demo", hexColor, emoji });
+};
+
+export const errorHandler = (err: any, req: Request, res: Response) => {
+  console.error(err);
+  res.render("index", { title: "Error", hexColor: '000', emoji: '⚠️' });
 };
 
 // enrich the context

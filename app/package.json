@@ -11,8 +11,9 @@
   "main": "main.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc",
-    "start": "npm run build && cp -R public/ dist/ && node dist/main.js",
+    "build": "tsc && cp -R public/ dist/",
+    "build:image": "npm run build && docker build --progress=plain . -t demo",
+    "start": "npm run build && node dist/main.js",
     "flagd": "docker run -p 8013:8013 -v $(pwd)/flags:/etc/flagd/ -it --pull=always ghcr.io/open-feature/flagd:latest start --uri file:./etc/flagd/dev-flags.json"
   },
   "dependencies": {
