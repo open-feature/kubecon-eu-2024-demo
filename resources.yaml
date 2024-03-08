@@ -155,10 +155,13 @@ spec:
         state: ENABLED
         defaultVariant: grey
         variants:
-          grey: "aaa"
-          green: "0a0"
-          yellow: "aa0"
-          red: "a00"
+          grey: aaa
+          red: a00
+          orange: ff6e00
+          yellow: aa0
+          green: 0a0
+          blue: 00a
+          indigo: 4b0082
         targeting: *pixelTargeting
       emoji:
         state: ENABLED
