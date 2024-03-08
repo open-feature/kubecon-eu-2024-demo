@@ -12,7 +12,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc && cp -R public/ dist/",
-    "build:image": "npm run build && docker build --progress=plain . -t demo",
+    "build:image": "npm run build && docker build --progress=plain . -t docker.io/toddbaert/openfeature-kubecon24",
+    "build:push": "npm run build:image && docker push docker.io/toddbaert/openfeature-kubecon24",
     "start": "npm run build && node dist/main.js",
     "flagd": "docker run -p 8013:8013 -v $(pwd)/flags:/etc/flagd/ -it --pull=always ghcr.io/open-feature/flagd:latest start --uri file:./etc/flagd/dev-flags.json"
   },
