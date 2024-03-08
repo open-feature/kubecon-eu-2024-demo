@@ -1,97 +1,146 @@
-
+---
 # yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
-flags: &flags {
-      "hex-color": {
-        "state": "ENABLED",
-        "defaultVariant": "grey",
-        "variants": {
-          "grey": "aaa",
-          "green": "0a0",
-          "yellow": "aa0",
-          "red": "a00"
-        },
-        "targeting": {
-          "if": [
-            { ">=": [{ "var": "batteryPercentage" }, 50] },
-            "green",
-            {
-              "if": [
-                { ">=": [{ "var": "batteryPercentage" }, 25] },
-                "yellow",
-                {
-                  "if": [
-                    { ">": [{ "var": "batteryPercentage" }, 0] },
-                    "red",
-                    "grey"
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      },
-      "emoji": {
-        "state": "ENABLED",
-        "defaultVariant": "none",
-        "variants": {
-          "none": "",
-          "grin": "😀",
-          "joy": "😂",
-          "xd": "😆",
-          "shades": "😎",
-          "angel": "😇",
-          "devil": "😈",
-          "cry": "😭",
-          "flush": "😳",
-          "mind-blown": "🤯",
-          "hot-face": "🥵",
-          "cat": "😸",
-          "ded": "💀",
-          "stonks": "📈",
-          "not-stonks": "📉",
-          "battery": "🔋",
-          "bot": "🤖",
-          "apple": "🍎",
-          "fox": "🦊",
-          "snail": "🐌",
-          "turtle": "🐢",
-          "rabbit": "🐇",
-          "rocket": "🚀",
-          "fr": "🇫🇷",
-          "en": "🇬🇧",
-          "es": "🇪🇸",
-          "pt": "🇵🇹",
-          "de": "🇩🇪",
-          "it": "🇮🇹",
-          "nl": "🇳🇱"
-        },
-        "targeting": {
-          "if": [
-            { "==": [{ "var": "connectionType" }, "4g"] },
-            "rocket",
-            {
-              "if": [
-                { "==": [{ "var": "connectionType" }, "3g"] },
-                "rabbit",
-                {
-                  "if": [
-                    { "==": [{ "var": "connectionType" }, "2g"] },
-                    "turtle",
-                    {
-                      "if": [
-                        { "==": [{ "var": "connectionType" }, "slow-2g"] },
-                        "snail",
-                        "none"
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      }
-    }
+## hex-color targeting
+pixelTargeting: &pixelTargeting
+  if:
+    - ">=":
+      - "*":
+        - var: windowHeight
+        - var: windowWidth
+      - 4000000
+    - indigo
+    - if:
+      - ">=":
+        - "*":
+          - var: windowHeight
+          - var: windowWidth
+        - 3200000
+      - blue
+      - if:
+        - ">=":
+          - "*":
+            - var: windowHeight
+            - var: windowWidth
+          - 2400000
+        - green
+        - if:
+          - ">=":
+            - "*":
+              - var: windowHeight
+              - var: windowWidth
+            - 1800000
+          - yellow
+          - if:
+            - ">=":
+              - "*":
+                - var: windowHeight
+                - var: windowWidth
+              - 0
+            - orange
+batteryTargeting: &batteryTargeting
+  if:
+  - ">=":
+    - var: batteryPercentage
+    - 50
+  - green
+  - if:
+    - ">=":
+      - var: batteryPercentage
+      - 25
+    - yellow
+    - if:
+      - ">":
+        - var: batteryPercentage
+        - 0
+      - red
+      - grey
+## emoji targeting
+osTargeting: &osTargeting
+  if:
+    - in:
+      - Android
+      - var: userAgent
+    - bot
+    - if:
+      - in:
+        - Mac
+        - var: userAgent
+      - apple
+      - if:
+        - in:
+          - Win      
+          - var: userAgent
+        - window
+        - if:
+          - in:
+            - Linux
+            - var: userAgent
+          - penguin
+          - if:
+            - in:
+              - iPhone
+              - var: userAgent
+            - apple
+            - mind-blown
+languageTargeting: &languageTargeting
+  if:
+  - in:
+    - fr
+    - var: language
+  - fr
+  - if:
+    - in:
+      - en
+      - var: language
+    - en
+    - if:
+      - in:
+        - es      
+        - var: language
+      - es
+      - if:
+        - in:
+          - pt
+          - var: language
+        - pt
+        - if:
+          - in:
+            - de
+            - var: language
+          - de
+          - if:
+            - in:
+              - it
+              - var: language
+            - it
+            - if:
+              - in:
+                - nl
+                - var: language
+              - nl
+              - globe
+connectionTargeting: &connectionTargeting
+  if:
+  - "==":
+    - var: connectionType
+    - 4g
+  - rocket
+  - if:
+    - "==":
+      - var: connectionType
+      - 3g
+    - rabbit
+    - if:
+      - "==":
+        - var: connectionType
+        - 2g
+      - turtle
+      - if:
+        - "==":
+          - var: connectionType
+          - slow-2g
+        - snail
+        - none
 # Flags for our backend application
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
@@ -101,7 +150,54 @@ metadata:
     app: open-feature-demo
 spec:
   flagSpec:
-    flags: *flags
+    flags:
+      hex-color:
+        state: ENABLED
+        defaultVariant: grey
+        variants:
+          grey: "aaa"
+          green: "0a0"
+          yellow: "aa0"
+          red: "a00"
+        targeting: *pixelTargeting
+      emoji:
+        state: ENABLED
+        defaultVariant: none
+        variants:
+          none: ""
+          grin: 😀
+          joy: 😂
+          xd: 😆
+          shades: 😎
+          angel: 😇
+          devil: 😈
+          cry: 😭
+          flush: 😳
+          mind-blown: 🤯
+          hot-face: 🥵
+          cat: 😸
+          ded: 💀
+          stonks: 📈
+          not-stonks: 📉
+          battery: 🔋
+          bot: 🤖
+          apple: 🍎
+          fox: 🦊
+          penguin: 🐧
+          window: 🪟
+          snail: 🐌
+          turtle: 🐢
+          rabbit: 🐇
+          rocket: 🚀
+          fr: 🇫🇷
+          en: 🇬🇧
+          es: 🇪🇸
+          pt: 🇵🇹
+          de: 🇩🇪
+          it: 🇮🇹
+          nl: 🇳🇱
+          globe: 🌎
+        targeting: *languageTargeting
 ---
 # Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
 apiVersion: core.openfeature.dev/v1beta1
