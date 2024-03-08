@@ -1,0 +1,215 @@
+
+# yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
+flags: &flags {
+      "hex-color": {
+        "state": "ENABLED",
+        "defaultVariant": "grey",
+        "variants": {
+          "grey": "aaa",
+          "green": "0a0",
+          "yellow": "aa0",
+          "red": "a00"
+        },
+        "targeting": {
+          "if": [
+            { ">=": [{ "var": "batteryPercentage" }, 50] },
+            "green",
+            {
+              "if": [
+                { ">=": [{ "var": "batteryPercentage" }, 25] },
+                "yellow",
+                {
+                  "if": [
+                    { ">": [{ "var": "batteryPercentage" }, 0] },
+                    "red",
+                    "grey"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "emoji": {
+        "state": "ENABLED",
+        "defaultVariant": "none",
+        "variants": {
+          "none": "",
+          "grin": "😀",
+          "joy": "😂",
+          "xd": "😆",
+          "shades": "😎",
+          "angel": "😇",
+          "devil": "😈",
+          "cry": "😭",
+          "flush": "😳",
+          "mind-blown": "🤯",
+          "hot-face": "🥵",
+          "cat": "😸",
+          "ded": "💀",
+          "stonks": "📈",
+          "not-stonks": "📉",
+          "battery": "🔋",
+          "bot": "🤖",
+          "apple": "🍎",
+          "fox": "🦊",
+          "snail": "🐌",
+          "turtle": "🐢",
+          "rabbit": "🐇",
+          "rocket": "🚀",
+          "fr": "🇫🇷",
+          "en": "🇬🇧",
+          "es": "🇪🇸",
+          "pt": "🇵🇹",
+          "de": "🇩🇪",
+          "it": "🇮🇹",
+          "nl": "🇳🇱"
+        },
+        "targeting": {
+          "if": [
+            { "==": [{ "var": "connectionType" }, "4g"] },
+            "rocket",
+            {
+              "if": [
+                { "==": [{ "var": "connectionType" }, "3g"] },
+                "rabbit",
+                {
+                  "if": [
+                    { "==": [{ "var": "connectionType" }, "2g"] },
+                    "turtle",
+                    {
+                      "if": [
+                        { "==": [{ "var": "connectionType" }, "slow-2g"] },
+                        "snail",
+                        "none"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+# Flags for our backend application
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlag
+metadata:
+  name: app-flags
+  labels:
+    app: open-feature-demo
+spec:
+  flagSpec:
+    flags: *flags
+---
+# Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlagSource
+metadata:
+  name: flag-sources
+  labels:
+    app: open-feature-demo
+spec:
+  sources:
+    - source: app-flags
+      provider: kubernetes
+
+---
+# Deployment of a demo-app using our custom resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-feature-demo-deployment
+  labels:
+    app: open-feature-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-feature-demo
+  template:
+    metadata:
+      labels:
+        app: open-feature-demo
+      annotations:
+        openfeature.dev/enabled: "true"
+        openfeature.dev/featureflagsource: "flag-sources"
+    spec:
+      containers:
+        - name: open-feature-demo
+          image: docker.io/toddbaert/openfeature-kubecon24
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neg-demo-svc # Name of Service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
+spec: # Service's specification
+  type: ClusterIP
+  selector:
+    app: open-feature-demo
+  ports:
+    - name: http
+      port: 80 # Service's port
+      protocol: TCP
+      targetPort: 3000
+
+---
+# Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
+apiVersion: core.openfeature.dev/v1beta1
+kind: FeatureFlagSource
+metadata:
+  name: flag-sources
+  labels:
+    app: open-feature-demo
+spec:
+  sources:
+    - source: app-flags
+      provider: kubernetes
+
+---
+# Deployment of a demo-app using our custom resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: open-feature-demo-deployment
+  labels:
+    app: open-feature-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: open-feature-demo
+  template:
+    metadata:
+      labels:
+        app: open-feature-demo
+      annotations:
+        openfeature.dev/enabled: "true"
+        openfeature.dev/featureflagsource: "flag-sources"
+    spec:
+      containers:
+        - name: open-feature-demo
+          image: docker.io/toddbaert/openfeature-kubecon24
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: neg-demo-svc # Name of Service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}' # Creates a NEG after an Ingress is created
+spec: # Service's specification
+  type: ClusterIP
+  selector:
+    app: open-feature-demo
+  ports:
+    - name: http
+      port: 80 # Service's port
+      protocol: TCP
+      targetPort: 3000
