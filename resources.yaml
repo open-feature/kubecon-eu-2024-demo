@@ -1,5 +1,10 @@
 ---
 # yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
+
+## target noting, using default flag
+emptyTargeting: &emptyTargeting {}
+
+## target emoji based on browser language              
 languageTargeting: &languageTargeting
   if:
   - in:
@@ -38,12 +43,16 @@ languageTargeting: &languageTargeting
               - nl
               - globe
 
+## target emoji based on timestamp              
+timedTargeting: &timedTargeting
+  if: 
+    - ">=":
+      - var: $flagd.timestamp
+      - 1710343959
+    - boom
+    - clock
 
-
-
-
-
-## hex-color targeting
+## target color based on screen res: higher res is "bluer"
 pixelTargeting: &pixelTargeting
   if:
     - ">=":
@@ -80,6 +89,8 @@ pixelTargeting: &pixelTargeting
                 - var: windowWidth
               - 0
             - orange
+
+## target color based on device battery (low=red, medium=yellow, high=green, null=grey)
 batteryTargeting: &batteryTargeting
   if:
   - ">=":
@@ -97,7 +108,8 @@ batteryTargeting: &batteryTargeting
         - 0
       - red
       - grey
-## emoji targeting
+
+## target emoji based on OS
 osTargeting: &osTargeting
   if:
     - in:
@@ -125,6 +137,8 @@ osTargeting: &osTargeting
               - var: userAgent
             - apple
             - mind-blown
+
+## target emoji based on connection quality
 connectionTargeting: &connectionTargeting
   if:
   - "==":
@@ -147,6 +161,8 @@ connectionTargeting: &connectionTargeting
           - slow-2g
         - snail
         - none
+
+## emoji randomly assigned to a card suit
 randomTargeting: &randomTargeting
   fractional:
     - 
@@ -161,6 +177,7 @@ randomTargeting: &randomTargeting
     - 
       - hearts
       - 25
+
 # Flags for our backend application
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
@@ -182,7 +199,9 @@ spec:
           green: 0a0
           blue: 00a
           indigo: 4b0082
-        targeting: *pixelTargeting
+        targeting: *emptyTargeting
+        # targeting: *pixelTargeting
+        # targeting: *batteryTargeting
       emoji:
         state: ENABLED
         defaultVariant: none
@@ -226,7 +245,12 @@ spec:
           globe: 🌎
           clock: ⏰
           boom: 💥
-        targeting: *randomTargeting
+        targeting: *emptyTargeting 
+        # targeting: *languageTargeting
+        # targeting: *osTargeting
+        # targeting: *randomTargeting
+        # targeting: *timedTargeting
+        # targeting: *connectionTargeting
 ---
 # Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
 apiVersion: core.openfeature.dev/v1beta1
