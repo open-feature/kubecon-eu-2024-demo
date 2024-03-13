@@ -177,6 +177,16 @@ randomTargeting: &randomTargeting
       - hearts
       - 25
 
+## emoji for randomly deciding the giveaway!
+giveawayTargeting: &giveawayTargeting
+  fractional:
+    - 
+      - red
+      - 75
+    - 
+      - green
+      - 25
+
 flags:
   hex-color:
     state: ENABLED
