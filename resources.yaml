@@ -90,6 +90,16 @@ pixelTargeting: &pixelTargeting
               - 0
             - orange
 
+## emoji randomly assigned to a card suit
+giveawayTargeting: &giveawayTargeting
+  fractional:
+    - 
+      - red
+      - 75
+    - 
+      - green
+      - 25
+
 ## target color based on device battery (low=red, medium=yellow, high=green, null=grey)
 batteryTargeting: &batteryTargeting
   if:
@@ -200,8 +210,10 @@ spec:
           blue: 00a
           indigo: 4b0082
         targeting: *emptyTargeting
-        # targeting: *pixelTargeting
-        # targeting: *batteryTargeting
+        #targeting: *pixelTargeting
+        #targeting: *batteryTargeting
+        #targeting: *giveawayTargeting
+
       emoji:
         state: ENABLED
         defaultVariant: none
@@ -246,11 +258,11 @@ spec:
           clock: ⏰
           boom: 💥
         targeting: *emptyTargeting 
-        # targeting: *languageTargeting
-        # targeting: *osTargeting
-        # targeting: *randomTargeting
-        # targeting: *timedTargeting
-        # targeting: *connectionTargeting
+        #targeting: *languageTargeting
+        #targeting: *osTargeting
+        #targeting: *randomTargeting
+        #targeting: *timedTargeting
+        #targeting: *connectionTargeting
 ---
 # Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
 apiVersion: core.openfeature.dev/v1beta1
