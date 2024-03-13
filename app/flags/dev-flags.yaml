@@ -1,87 +1,9 @@
 ---
 # yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
-## hex-color targeting
-pixelTargeting: &pixelTargeting
-  if:
-    - ">=":
-      - "*":
-        - var: windowHeight
-        - var: windowWidth
-      - 4000000
-    - indigo
-    - if:
-      - ">=":
-        - "*":
-          - var: windowHeight
-          - var: windowWidth
-        - 3200000
-      - blue
-      - if:
-        - ">=":
-          - "*":
-            - var: windowHeight
-            - var: windowWidth
-          - 2400000
-        - green
-        - if:
-          - ">=":
-            - "*":
-              - var: windowHeight
-              - var: windowWidth
-            - 1800000
-          - yellow
-          - if:
-            - ">=":
-              - "*":
-                - var: windowHeight
-                - var: windowWidth
-              - 0
-            - orange
-batteryTargeting: &batteryTargeting
-  if:
-  - ">=":
-    - var: batteryPercentage
-    - 50
-  - green
-  - if:
-    - ">=":
-      - var: batteryPercentage
-      - 25
-    - yellow
-    - if:
-      - ">":
-        - var: batteryPercentage
-        - 0
-      - red
-      - grey
-## emoji targeting
-osTargeting: &osTargeting
-  if:
-    - in:
-      - Android
-      - var: userAgent
-    - bot
-    - if:
-      - in:
-        - Mac
-        - var: userAgent
-      - apple
-      - if:
-        - in:
-          - Win      
-          - var: userAgent
-        - window
-        - if:
-          - in:
-            - Linux
-            - var: userAgent
-          - penguin
-          - if:
-            - in:
-              - iPhone
-              - var: userAgent
-            - apple
-            - mind-blown
+## target noting, using default flag
+emptyTargeting: &emptyTargeting {}
+
+## target emoji based on browser language              
 languageTargeting: &languageTargeting
   if:
   - in:
@@ -119,6 +41,103 @@ languageTargeting: &languageTargeting
                 - var: language
               - nl
               - globe
+
+## target emoji based on timestamp              
+timedTargeting: &timedTargeting
+  if: 
+    - ">=":
+      - var: $flagd.timestamp
+      - 1710343959
+    - boom
+    - clock
+
+## target color based on screen res: higher res is "bluer"
+pixelTargeting: &pixelTargeting
+  if:
+    - ">=":
+      - "*":
+        - var: windowHeight
+        - var: windowWidth
+      - 4000000
+    - indigo
+    - if:
+      - ">=":
+        - "*":
+          - var: windowHeight
+          - var: windowWidth
+        - 3200000
+      - blue
+      - if:
+        - ">=":
+          - "*":
+            - var: windowHeight
+            - var: windowWidth
+          - 2400000
+        - green
+        - if:
+          - ">=":
+            - "*":
+              - var: windowHeight
+              - var: windowWidth
+            - 1800000
+          - yellow
+          - if:
+            - ">=":
+              - "*":
+                - var: windowHeight
+                - var: windowWidth
+              - 0
+            - orange
+
+## target color based on device battery (low=red, medium=yellow, high=green, null=grey)
+batteryTargeting: &batteryTargeting
+  if:
+  - ">=":
+    - var: batteryPercentage
+    - 50
+  - green
+  - if:
+    - ">=":
+      - var: batteryPercentage
+      - 25
+    - yellow
+    - if:
+      - ">":
+        - var: batteryPercentage
+        - 0
+      - red
+      - grey
+
+## target emoji based on OS
+osTargeting: &osTargeting
+  if:
+    - in:
+      - Android
+      - var: userAgent
+    - bot
+    - if:
+      - in:
+        - Mac
+        - var: userAgent
+      - apple
+      - if:
+        - in:
+          - Win      
+          - var: userAgent
+        - window
+        - if:
+          - in:
+            - Linux
+            - var: userAgent
+          - penguin
+          - if:
+            - in:
+              - iPhone
+              - var: userAgent
+            - apple
+            - mind-blown
+
+## target emoji based on connection quality
 connectionTargeting: &connectionTargeting
   if:
   - "==":
@@ -141,6 +160,23 @@ connectionTargeting: &connectionTargeting
           - slow-2g
         - snail
         - none
+
+## emoji randomly assigned to a card suit
+randomTargeting: &randomTargeting
+  fractional:
+    - 
+      - clubs
+      - 25
+    - 
+      - spades
+      - 25
+    - 
+      - diamonds
+      - 25
+    - 
+      - hearts
+      - 25
+
 flags:
   hex-color:
     state: ENABLED
@@ -183,6 +219,10 @@ flags:
       turtle: 🐢
       rabbit: 🐇
       rocket: 🚀
+      spades: "♠️"
+      clubs: "♣️"
+      diamonds: "♦️"
+      hearts: "♥️"
       fr: 🇫🇷
       en: 🇬🇧
       es: 🇪🇸
@@ -191,4 +231,6 @@ flags:
       it: 🇮🇹
       nl: 🇳🇱
       globe: 🌎
-    targeting: *osTargeting
+      clock: ⏰
+      boom: 💥
+    targeting: *timedTargeting

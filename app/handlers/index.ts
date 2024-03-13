@@ -27,6 +27,11 @@ type AppSpecificContext = {
    * Possible values: "slow-2g", "2g", "3g", or "4g"
    */
   connectionType?: string
+  /**
+   * A string logically identifying the subject of evaluation (end-user, service, etc).
+   * https://openfeature.dev/specification/glossary#targeting-key
+   */
+  targetingKey?: string
 };
 
 export const indexHandler = async (req: Request, res: Response) => {
@@ -34,7 +39,7 @@ export const indexHandler = async (req: Request, res: Response) => {
   const client = OpenFeature.getClient();
   const context = generateContext(req);
   const hexColor = await client.getStringValue('hex-color', '000', context);
-  const emoji = await client.getStringValue('emoji', "", context);
+  const emoji = await client.getStringValue('emoji', "", {...context, } );
 
   if (process.env.DEBUG == 'true') {
     console.log(context);

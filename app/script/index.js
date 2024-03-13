@@ -1,4 +1,8 @@
 const search = new URLSearchParams(window.location.search);
+const targetingKey = 'targetingKey';
+if (!localStorage.getItem(targetingKey)) {
+  localStorage.setItem(targetingKey, Math.floor(Math.random() * 1000));
+}
 
 Promise.all([
   new Promise((resolve) => {setTimeout(resolve, search.size ? 3000 : 0)}),
@@ -13,7 +17,8 @@ Promise.all([
     windowWidth: window.outerWidth,
     batteryPercentage,
     language: navigator?.language,
-    connectionType: navigator?.connection?.effectiveType
+    connectionType: navigator?.connection?.effectiveType,
+    targetingKey: localStorage.getItem(targetingKey),
   };
   search.set('context', encodeURIComponent(JSON.stringify(context)));
   window.location.search = search;
