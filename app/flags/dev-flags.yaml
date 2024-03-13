@@ -141,6 +141,20 @@ connectionTargeting: &connectionTargeting
           - slow-2g
         - snail
         - none
+randomTargeting: &randomTargeting
+  fractional:
+    - 
+      - clubs
+      -  25
+    - 
+      - spades
+      - 25
+    - 
+      - diamonds
+      - 25
+    - 
+      - hearts
+      - 25
 flags:
   hex-color:
     state: ENABLED
@@ -183,6 +197,10 @@ flags:
       turtle: 🐢
       rabbit: 🐇
       rocket: 🚀
+      spades: "♠️"
+      clubs: "♣️"
+      diamonds: "♦️"
+      hearts: "♥️"
       fr: 🇫🇷
       en: 🇬🇧
       es: 🇪🇸
@@ -191,4 +209,6 @@ flags:
       it: 🇮🇹
       nl: 🇳🇱
       globe: 🌎
-    targeting: *osTargeting
+      clock: ⏰
+      boom: 💥
+    targeting: *randomTargeting

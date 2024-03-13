@@ -1,5 +1,48 @@
 ---
 # yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
+languageTargeting: &languageTargeting
+  if:
+  - in:
+    - fr
+    - var: language
+  - fr
+  - if:
+    - in:
+      - en
+      - var: language
+    - en
+    - if:
+      - in:
+        - es      
+        - var: language
+      - es
+      - if:
+        - in:
+          - pt
+          - var: language
+        - pt
+        - if:
+          - in:
+            - de
+            - var: language
+          - de
+          - if:
+            - in:
+              - it
+              - var: language
+            - it
+            - if:
+              - in:
+                - nl
+                - var: language
+              - nl
+              - globe
+
+
+
+
+
+
 ## hex-color targeting
 pixelTargeting: &pixelTargeting
   if:
@@ -82,43 +125,6 @@ osTargeting: &osTargeting
               - var: userAgent
             - apple
             - mind-blown
-languageTargeting: &languageTargeting
-  if:
-  - in:
-    - fr
-    - var: language
-  - fr
-  - if:
-    - in:
-      - en
-      - var: language
-    - en
-    - if:
-      - in:
-        - es      
-        - var: language
-      - es
-      - if:
-        - in:
-          - pt
-          - var: language
-        - pt
-        - if:
-          - in:
-            - de
-            - var: language
-          - de
-          - if:
-            - in:
-              - it
-              - var: language
-            - it
-            - if:
-              - in:
-                - nl
-                - var: language
-              - nl
-              - globe
 connectionTargeting: &connectionTargeting
   if:
   - "==":
@@ -141,6 +147,20 @@ connectionTargeting: &connectionTargeting
           - slow-2g
         - snail
         - none
+randomTargeting: &randomTargeting
+  fractional:
+    - 
+      - clubs
+      - 25
+    - 
+      - spades
+      - 25
+    - 
+      - diamonds
+      - 25
+    - 
+      - hearts
+      - 25
 # Flags for our backend application
 apiVersion: core.openfeature.dev/v1beta1
 kind: FeatureFlag
@@ -192,6 +212,10 @@ spec:
           turtle: 🐢
           rabbit: 🐇
           rocket: 🚀
+          spades: "♠️"
+          clubs: "♣️"
+          diamonds: "♦️"
+          hearts: "♥️"
           fr: 🇫🇷
           en: 🇬🇧
           es: 🇪🇸
@@ -200,7 +224,9 @@ spec:
           it: 🇮🇹
           nl: 🇳🇱
           globe: 🌎
-        targeting: *languageTargeting
+          clock: ⏰
+          boom: 💥
+        targeting: *randomTargeting
 ---
 # Feature flag source custom resource, configuring flagd to source flags from FeatureFlag CRDs
 apiVersion: core.openfeature.dev/v1beta1
