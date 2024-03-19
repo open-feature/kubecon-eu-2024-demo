@@ -90,7 +90,7 @@ pixelTargeting: &pixelTargeting
               - 0
             - orange
 
-## emoji randomly assigned to a card suit
+## target color randomly deciding the giveaway!
 giveawayTargeting: &giveawayTargeting
   fractional:
     - 

@@ -1,5 +1,6 @@
 ---
 # yaml-language-server: $schema=https://flagd.dev/schema/v0/flags.json
+
 ## target noting, using default flag
 emptyTargeting: &emptyTargeting {}
 
@@ -89,6 +90,16 @@ pixelTargeting: &pixelTargeting
               - 0
             - orange
 
+## target color for randomly deciding the giveaway!
+giveawayTargeting: &giveawayTargeting
+  fractional:
+    - 
+      - red
+      - 75
+    - 
+      - green
+      - 25
+
 ## target color based on device battery (low=red, medium=yellow, high=green, null=grey)
 batteryTargeting: &batteryTargeting
   if:
@@ -177,16 +188,6 @@ randomTargeting: &randomTargeting
       - hearts
       - 25
 
-## emoji for randomly deciding the giveaway!
-giveawayTargeting: &giveawayTargeting
-  fractional:
-    - 
-      - red
-      - 75
-    - 
-      - green
-      - 25
-
 flags:
   hex-color:
     state: ENABLED
@@ -199,7 +200,11 @@ flags:
       green: 0a0
       blue: 00a
       indigo: 4b0082
-    targeting: *pixelTargeting
+    targeting: *emptyTargeting
+    #targeting: *pixelTargeting
+    #targeting: *batteryTargeting
+    #targeting: *giveawayTargeting
+
   emoji:
     state: ENABLED
     defaultVariant: none
@@ -243,4 +248,10 @@ flags:
       globe: 🌎
       clock: ⏰
       boom: 💥
-    targeting: *timedTargeting
+    targeting: *emptyTargeting 
+    #targeting: *languageTargeting
+    #targeting: *osTargeting
+    #targeting: *randomTargeting
+    #targeting: *timedTargeting
+    #targeting: *connectionTargeting
+---

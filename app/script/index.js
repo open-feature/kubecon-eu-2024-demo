@@ -1,7 +1,7 @@
 const search = new URLSearchParams(window.location.search);
 const targetingKey = 'targetingKey';
 if (!localStorage.getItem(targetingKey)) {
-  localStorage.setItem(targetingKey, Math.floor(Math.random() * 1000));
+  localStorage.setItem(targetingKey, Math.floor(Math.random() * 1000000));
 }
 
 Promise.all([
