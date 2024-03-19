@@ -45,7 +45,7 @@ export const indexHandler = async (req: Request, res: Response) => {
   const client = OpenFeature.getClient();
   const context = generateContext(req);
   const hexColor = await client.getStringValue('hex-color', '000', context);
-  const emoji = await client.getStringValue('emoji', "", {...context, } );
+  const emoji = await client.getStringValue('emoji', "", context );
 
   if (process.env.DEBUG == 'true') {
     console.log(context);
