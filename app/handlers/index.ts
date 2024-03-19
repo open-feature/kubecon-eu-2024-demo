@@ -1,6 +1,12 @@
 import { OpenFeature } from '@openfeature/server-sdk';
 import { Request, Response } from 'express';
 
+let targetingKeys = new Set<string>;
+
+setInterval(() => {
+  console.log(`unique users: ${targetingKeys.size}`);
+}, 5000);
+
 type AppSpecificContext = {
   /**
    * Value of the user User-Agent header
@@ -46,6 +52,10 @@ export const indexHandler = async (req: Request, res: Response) => {
   }
 
   res.render("index", { title: "Demo", hexColor, emoji });
+
+  if (context.targetingKey && !targetingKeys.has(context.targetingKey)) {
+    targetingKeys.add(context.targetingKey);
+  }
 };
 
 export const errorHandler = (err: any, req: Request, res: Response) => {
