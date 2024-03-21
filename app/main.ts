@@ -26,7 +26,8 @@ app.use(function (req, res, next) {
 // error handler
 app.use(errorHandler);
 
-OpenFeature.setProviderAndWait(new FlagdProvider());
+OpenFeature.setLogger({ error: () => {}, warn: () => {}, info: () => {}, debug: () => {}});
+OpenFeature.setProviderAndWait(new FlagdProvider({},  { error: () => {}, warn: () => {}, info: () => {}, debug: () => {}}));
 
 var server = http.createServer(app);
 
