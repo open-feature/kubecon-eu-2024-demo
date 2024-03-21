@@ -4,7 +4,7 @@
 
 This is a demo for KubeCon EU '24.
 
-Running locally:
+### Running locally
 
 1. install npm, node and docker
 1. `cd app && npm install`
@@ -14,7 +14,7 @@ Running locally:
 Visit the app at `localhost:3000`.
 Change flag values in `app/flags/dev-flags.yaml` and observe the results.
 
-Understanding the app:
+### Understanding the app
 
 This simple node app serves a very basic "pug" template [here](https://github.com/open-feature/kubecon-eu-2024-demo/blob/main/app/views/index.pug).
 The template is served by a simple express request handler [here](https://github.com/open-feature/kubecon-eu-2024-demo/blob/main/app/handlers/index.ts).
